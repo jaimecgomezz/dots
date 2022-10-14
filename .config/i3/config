@@ -213,7 +213,7 @@ bindsym $mod+o                                    exec rofi -show filebrowser
 ####################
 
 # terminal
-bindsym $mod+Return                               exec $console "screen -a"
+bindsym $mod+Return                               exec $console screen -a
 bindsym $mod+Shift+Return                         exec $console
 ####################
 

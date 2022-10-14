@@ -1,0 +1,83 @@
+#############################
+# @jaimecgomezz
+#
+# screen conf
+##############################
+
+
+
+
+# GENERAL #########
+#
+vbell off                                                                       # Disable visual bell
+startup_message off                                                             # turn off the welcome message
+defscrollback 10000                                                             # Set scrollback buffer to 10000
+nonblock "on"                                                                   # Don't block command output if the terminal stops responding
+altscreen "on"                                                                  # Allow editors etc. to restore display on exit rather than leaving existing text in place
+####################
+
+
+
+# STATUS-LINE #####
+#
+windowlist title "%{= dR} Num Name %=%{= dd}"
+windowlist string "%{= dR} %{= dR} %n  %t %{-} %=%{= dd}"
+#
+rendition so =02                                                                # vertical region divider style
+caption title "%{= dR} %3n %t %=%{= dd}"                                        # captions title definition
+caption always "%{=b kR} %n:%t %?%F%{= kK}%:%{=u kR}%?  %h %-024=%{+b} %C%a %D %d %M %Y%{= db}"
+####################
+
+
+
+# REGIONS ####
+#
+bind V split                                                                    # split horizontal
+bind v eval "split" "focus" "screen -a"                                         # split horizontal, start session
+bind G split -v                                                                 # split vertical
+bind g eval "split -v" "focus" "screen -a"                                      # split vertical, start session
+#
+bindkey "^[[1;3A" focus up                                                      # ^
+bindkey "^[[1;3C" focus right                                                   # >
+bindkey "^[[1;3B" focus down                                                    # v
+bindkey "^[[1;3D" focus left                                                    # <
+#
+bind x remove                                                                   # kill region
+bind K only                                                                     # kill all region but current
+#
+bind = resize -b =                                                              # resize regions equal
+#
+bind h resize -h -5%                                                            # resize region by 5%
+bind j resize -v +5%                                                            # resize region by 5%
+bind k resize -v -5%                                                            # resize region by 5%
+bind l resize -h +5%                                                            # resize region by 5%
+#
+bind H resize -h -20%                                                           # resize region by 20%
+bind J resize -v +20%                                                           # resize region by 20%
+bind K resize -v -20%                                                           # resize region by 20%
+bind L resize -h +20%                                                           # resize region by 20%
+####################
+
+
+
+# LAYOUTS
+#
+bind o layout select                                                           # select a layout
+bind n layout new                                                              # crete new empty layout
+#
+layout autosave "on"                                                            # autosave layouts
+####################
+
+
+
+# Miscellaneus #####
+#
+bind Q quit                                                                     # exit session
+bind > eval writebuf "exec sh -c 'xsel -nbi </tmp/screen-exchange'"             # send to clipboard
+####################
+
+
+
+# Sources ##########
+# https://kdrossos.net/blog/15/
+# https://serverfault.com/questions/3740/what-are-useful-screenrc-settings
