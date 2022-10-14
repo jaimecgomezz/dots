@@ -1,0 +1,475 @@
+cmd([[packadd packer.nvim]])
+
+return require("packer").startup(function(use)
+	-- bootstrap
+	use("wbthomason/packer.nvim")
+
+	-- startup
+	-- Speed up loading Lua modules in Neovim to improve startup time.
+	use({ "lewis6991/impatient.nvim" })
+
+	-- colorschemes
+	use('ntk148v/vim-horizon')
+
+	-- statusline
+	use({
+		"nvim-lualine/lualine.nvim",
+		requires = { "kyazdani42/nvim-web-devicons", opt = true },
+		config = function()
+			require("lualine").setup({
+				options = {
+					icons_enabled = true,
+					theme = "iceberg_dark",
+				},
+				sections = {
+					lualine_a = {
+						{
+							"filename",
+							path = 1,
+						},
+					},
+				},
+			})
+		end,
+	})
+
+	-- syntax
+	use({
+		-- Extends vim's % key to language-specific words.
+		{ "andymass/vim-matchup" },
+		{
+			"nvim-treesitter/nvim-treesitter",
+			run = ":TSUpdate",
+			config = function()
+				require("nvim-treesitter.configs").setup({
+					ensure_installed = {
+						"bash",
+						"dockerfile",
+						"dot",
+						"go",
+						"graphql",
+						"html",
+						"http",
+						"javascript",
+						"json",
+						"json5",
+						"lua",
+						"make",
+						"python",
+						"ruby",
+						"rust",
+						"toml",
+						"yaml",
+					},
+					sync_install = false,
+					highlight = {
+						enable = true,
+						additional_vim_regex_highlighting = false,
+					},
+					incremental_selection = {
+						enable = true,
+						keymaps = {
+							init_selection = "gnn",
+							node_incremental = "grn",
+							scope_incremental = "grc",
+							node_decremental = "grm",
+						},
+					},
+					matchup = {
+						enable = true,
+					},
+				})
+			end,
+		},
+		-- Use treesitter to autoclose and autorename various tag.
+		{
+			"windwp/nvim-ts-autotag",
+			config = function()
+				require("nvim-ts-autotag").setup({
+					filetypes = { "html", "javascript", "javascriptreact", "typescriptreact" },
+				})
+			end,
+		},
+	})
+
+	-- completition
+	use({
+		{
+			"ms-jpq/coq_nvim",
+			run = "python3 -m coq deps",
+			config = function()
+				vim.g.coq_settings = {
+					auto_start = "shut-up",
+					keymap = {
+						manual_complete = "",
+					},
+					clients = {
+						snippets = {
+							warn = {},
+						},
+					},
+				}
+			end,
+		},
+		{ "ms-jpq/coq.artifacts", branch = "artifacts" },
+	})
+
+
+	-- filer
+	use({
+		"kyazdani42/nvim-tree.lua",
+		requires = { "kyazdani42/nvim-web-devicons" },
+		config = function()
+			require("nvim-tree").setup({
+				actions = {
+					open_file = {
+						quit_on_open = true,
+					},
+					change_dir = {
+						enable = true,
+						global = true,
+					},
+				},
+				view = {
+					width = 30,
+					side = "left",
+					hide_root_folder = true,
+				},
+				disable_netrw = true,
+				hijack_cursor = true,
+				update_cwd = true,
+				hijack_directories = {
+					enable = true,
+					auto_open = false,
+				},
+				renderer = {
+					indent_markers = {
+						enable = true
+					},
+					icons = {
+						glyphs = {
+							git = {
+								staged = "✓",
+								ignored = "~",
+								unstaged = "Ξ",
+								untracked = "+",
+								unmerged = "µ",
+								deleted = "✕",
+								renamed = "≌",
+							}
+						}
+					}
+				},
+				respect_buf_cwd = true
+			})
+
+			local opts = { silent = true, noremap = true }
+
+			map("n", "<localleader>ff", "<cmd>NvimTreeToggle<cr>", opts)
+			map("n", "<localleader>fb", "<cmd>NvimTreeFindFileToggle<cr>", opts)
+		end
+	})
+
+	-- projects
+	use({
+		"benwainwright/fzf-project",
+		config = function()
+			g.fzfSwitchProjectAlwaysChooseFile = 0
+			g.fzfSwitchProjectGitInitBehavior = "none"
+			g.fzfSwitchProjectWorkspaces = {
+				"~/repos/jaimecgomezz",
+				"~/repos/aleph",
+			}
+
+			local opts = { silent = true, noremap = true }
+
+			map("n", "<leader>pp", "<cmd>FzfSwitchProject<cr>", opts)
+		end
+	})
+
+	-- search
+	use({
+		{
+			"nvim-telescope/telescope.nvim",
+			requires = {
+				"nvim-lua/popup.nvim",
+				"nvim-lua/plenary.nvim",
+				"telescope-frecency.nvim",
+				"telescope-fzf-native.nvim",
+			},
+			wants = {
+				"popup.nvim",
+				"plenary.nvim",
+				"telescope-frecency.nvim",
+				"telescope-fzf-native.nvim",
+			},
+			cmd = "Telescope",
+			module = "telescope",
+			config = function()
+				local telescope = require("telescope")
+				local actions = require("telescope.actions")
+				local action_layout = require("telescope.actions.layout")
+				
+				local dropdown_pickers = {
+					"buffers",
+					"commands",
+					"command_history",
+					"search_history",
+					"man_pages",
+					"colorscheme",
+					"registers",
+					"spell_suggest",
+					"keymaps",
+					"filetypes",
+					"highlights",
+					"pickers",
+					"find_files",
+					"pickers",
+					"oldfiles",
+				}
+				
+				local pickers = {}
+				for _, picker in pairs(dropdown_pickers) do
+					pickers[picker] = { theme = "dropdown" }
+				end
+				
+				telescope.setup({
+					defaults = {
+						file_ignore_patterns = {
+							"node_modules",
+							"coverage",
+							"target",
+							"tmp",
+							".git",
+							"tags",
+						},
+						mappings = {
+							i = {
+								["<esc>"] = actions.close,
+								["<C-k>"] = actions.move_selection_previous,
+								["<C-j>"] = actions.move_selection_next,
+								["<M-p>"] = action_layout.toggle_preview,
+							},
+							n = {
+								["<M-p>"] = action_layout.toggle_preview,
+							},
+						},
+						vimgrep_arguments = {
+							"ag",
+							"--vimgrep",
+							"--hidden",
+						},
+					},
+					pickers = pickers,
+				})
+				
+				local opts = { silent = true, noremap = true }
+				
+				-- pickers
+				map("n", "z=", "<cmd>Telescope spell_suggest<cr>", opts)
+				map("n", "<leader>fc", "<cmd>Telescope commands<cr>", opts)
+				map("n", "<leader>fb", "<cmd>Telescope filetypes<cr>", opts)
+				map("n", "<leader>fr", "<cmd>Telescope registers<cr>", opts)
+				map("n", "<leader>fs", "<cmd>Telescope colorscheme<cr>", opts)
+				map("n", "<leader>fw", "<cmd>Telescope grep_string<cr>", opts)
+				map("n", "<leader>ff", "<cmd>Telescope live_grep hidden=true<cr>", opts)
+				map("n", "<leader>fm", "<cmd>Telescope man_pages previewer=false<cr>", opts)
+				map("n", "<leader>fp", "<cmd>Telescope pickers previewer=false<cr>", opts)
+				map("n", "<leader>fk", "<cmd>Telescope keymaps previewer=false<cr>", opts)
+				
+				-- git pickers
+				map("n", "<leader>gS", "<cmd>Telescope git_stash<cr>", opts)
+				map("n", "<leader>gs", "<cmd>Telescope git_status<cr>", opts)
+				map("n", "<leader>gc", "<cmd>Telescope git_commits<cr>", opts)
+				map("n", "<leader>gb", "<cmd>Telescope git_branches<cr>", opts)
+				
+				-- history pickers
+				map("n", "<leader>hf", "<cmd>Telescope oldfiles previewer=false<cr>", opts)
+				map("n", "<leader>hc", "<cmd>Telescope command_history<cr>", opts)
+				map("n", "<leader>hs", "<cmd>Telescope search_history<cr>", opts)
+				
+				-- finder pickers
+				map("n", "<c-p>", "<cmd>Telescope find_files previewer=false hidden=true<cr>", opts)
+				map("n", "<c-space>", "<cmd>Telescope buffers previewer=false sort_mru=true ignore_current_buffer=true<cr>", opts)
+			end,
+		},
+		{
+			"nvim-telescope/telescope-frecency.nvim",
+			after = "telescope.nvim",
+			requires = "tami5/sqlite.lua",
+		},
+		{
+			"nvim-telescope/telescope-fzf-native.nvim",
+			run = "make",
+		},
+		{
+			"LinArcX/telescope-env.nvim",
+			config = function()
+				require("telescope").load_extension("env")
+
+				local opts = { silent = true, noremap = true }
+
+				map("n", "<leader>fe", "<cmd>Telescope env<cr>", opts)
+			end
+		},
+		{
+			"da-moon/telescope-toggleterm.nvim",
+			requires = {
+				"akinsho/nvim-toggleterm.lua",
+				"nvim-telescope/telescope.nvim",
+				"nvim-lua/popup.nvim",
+				"nvim-lua/plenary.nvim",
+			},
+			config = function()
+				require("telescope-toggleterm").setup({
+					telescope_mappings = {
+						["<c-k>"] = require("telescope-toggleterm").actions.exit_terminal,
+					},
+				})
+				
+				require("telescope").load_extension("toggleterm")
+				
+				local opts = { silent = true, noremap = true }
+				
+				map("n", "<leader>ft", "<cmd>Telescope toggleterm theme=dropdown<cr>", opts)
+			end,
+		},
+	})
+
+	-- start page
+	use({
+		"mhinz/vim-startify",
+		config = function()
+			cmd([[
+				let g:ascii = [
+							\ " ██▒   █▓ ██▓ ███▄ ▄███▓ ",
+							\ "▓██░   █▒▓██▒▓██▒▀█▀ ██▒ ",
+							\ " ▓██  █▒░▒██▒▓██    ▓██░ ",
+							\ "  ▒██ █░░░██░▒██    ▒██  ",
+							\ "   ▒▀█░  ░██░▒██▒   ░██▒ ",
+							\ "   ░ ▐░  ░▓  ░ ▒░   ░  ░ ",
+							\ "   ░ ░░   ▒ ░░  ░      ░ ",
+							\ "     ░░   ▒ ░░      ░    ",
+							\ "      ░   ░         ░    ",
+							\ "     ░                   ",
+							\ ]
+				let g:startify_custom_header = startify#pad(g:ascii + startify#fortune#boxed())
+				let g:startify_lists = [{ 'type': 'files',     'header': ['   Recent']  }]
+			]])
+
+			map("n", "<leader>vs", "<cmd>Startify<cr>", { silent = true, noremap = true })
+		end
+	})
+
+	-- local files
+	use({
+		"ctrlpvim/ctrlp.vim",
+		config = function()
+			g.ctrlp_map = "<c-l>"
+			g.ctrlp_show_hidden = 1
+			g.ctrlp_user_command = "fd -t f -d 1000"
+			g.ctrlp_working_path_mode = "c"
+			g.ctrlp_match_window = "bottom,order:ttb,min:1,max:20,results:20"
+			g.ctrlp_custom_ignore = {
+				dir = ".git$|.yardoc|node_modules|log|target|tmp$",
+				file = ".so$|.dat$|.DS_Store$",
+			}
+		end
+	})
+
+
+	-- motion
+	use({
+		-- More useful word motions for Vim
+		{ "chaoren/vim-wordmotion" },
+		-- Jump to any location specified by two characters.
+		{ "justinmk/vim-sneak" },
+		-- Adds various text objects to give you more targets to operate on.
+		{ "wellle/targets.vim" },
+	})
+
+	-- highlights
+	-- Disables search highlighting when you are done searching and re-enables it when you search again
+	use({ "romainl/vim-cool" })
+
+	-- git
+	-- Fugitive is the premier Vim plugin for Git.
+	use({
+		"tpope/vim-fugitive",
+		config = function()
+			local opts = { silent = true, noremap = true }
+
+			map("n", "<leader>gg", "<cmd>vert Git<cr>", opts)
+			map("n", "<leader>gl", "<cmd>vert Git log<cr>", opts)
+		end,
+	})
+
+	-- colorizer
+	-- A high-performance color highlighter for Neovim which has no external dependencies.
+	use({
+		"norcalli/nvim-colorizer.lua",
+		ft = { "css", "javascript", "vim", "html" },
+		config = function()
+			require("colorizer").setup({ "css", "javascript", "vim", "html" })
+		end,
+	})
+
+	-- utils
+	use("tpope/vim-surround")
+	use("jiangmiao/auto-pairs")
+	use("tpope/vim-commentary")
+	use("triglav/vim-visual-increment")
+
+	-- tags
+	use("ludovicchabant/vim-gutentags")
+	use({
+		"preservim/tagbar",
+		cmd = { "Tagbar", "TagbarToggle" },
+		config = function()
+			g.tagbar_autoclose = 1
+			g.tagbar_width = 80
+			g.tagbar_autofocus = 1
+			g.tagbar_compact = 1
+			g.tagbar_show_data_type = 1
+			g.tagbar_autoshowtag = 1
+			g.tagbar_ignore_anonymous = 1
+			g.tagbar_sort = 0
+		end
+	})
+
+	-- terminal
+	use({
+		"akinsho/toggleterm.nvim",
+		config = function()
+			require("toggleterm").setup({
+				size = function(term)
+					if term.direction == "horizontal" then
+						return 15
+					elseif term.direction == "vertical" then
+						return vim.o.columns * 0.5
+					end
+				end,
+				open_mapping = [[<leader>tt]],
+				shading_factor = "1",
+				persist_size = true,
+				direction = "vertical",
+				float_opts = {
+					border = "shadow",
+					width = 1,
+					height = 1,
+				},
+			})
+			
+			local opts = { silent = true, noremap = true }
+			
+			map("t", "<leader>wh", [[<C-\><C-n><C-W>h]], opts)
+			map("t", "<leader>wj", [[<C-\><C-n><C-W>j]], opts)
+			map("t", "<leader>wk", [[<C-\><C-n><C-W>k]], opts)
+			map("t", "<leader>wl", [[<C-\><C-n><C-W>l]], opts)
+			map("t", "<leader>tk", [[<C-\><C-n><cmd>bd!<cr>]], opts)
+		end
+	})
+
+	-- csv
+	use({ "chrisbra/csv.vim" })
+end)
