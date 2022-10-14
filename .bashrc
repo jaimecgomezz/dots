@@ -30,6 +30,7 @@ export READER=newsboat
 export BROWSER=firefox
 export NOTIFIER=dunstify
 export HISTCONTROL=ignoredups:erasedups
+export BAT_THEME=1337
 export DMENU='rofi -dmenu'
 export ARCHFLAGS="-arch x86_64"
 export PATH="${PATH}:${SCRIPTS_PATH}"
