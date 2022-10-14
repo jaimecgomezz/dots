@@ -1,0 +1,393 @@
+# thbrd
+#
+# CONFIG
+#
+# This file describes the custom config for the i3 window manager
+
+##################################################
+#
+# LESSONS LEARNED
+#
+# 1. Single quotes may be interpreted as strings
+# 2. Sorround a whole commad w/dq in order to exec
+#
+##################################################
+
+##################################################
+#
+# DEFAULTS 
+#
+##################################################
+
+# mods 
+set $mod                                          Mod4
+floating_modifier                                 Mod4
+####################
+
+# paths
+set $screenshotspath                              ~/pictures/screenshots
+####################
+
+# defaults
+set $console                                      kitty
+set $shell                                        bash
+####################
+
+
+
+##################################################
+#
+# AUTOSTART 
+#
+##################################################
+
+# wallpaper
+exec --no-startup-id                              hsetroot -cover ~/pictures/walls/wallpaper
+
+# keyboard
+exec --no-startup-id                              setxkbmap us -variant altgr-intl -option 'ctrl:nocaps'
+
+# lock
+exec --no-startup-id                              xidlehook --not-when-audio --not-when-fullscreen --timer 600 "exit-system lock" "" &
+####################
+
+
+
+##################################################
+#
+# STYLE
+#
+##################################################
+
+
+## fonts
+#
+font pango:                                       Noto Sans 8
+####################
+
+## gaps
+#
+# gaps-size
+gaps inner                                        10
+gaps outer                                        10
+####################
+
+
+
+##################################################
+#
+# MODES
+#
+##################################################
+
+## screenshot-mode
+#
+set $mode_screenshot                              [e]very-screen, [f]ocused-screen, [s]elect
+#
+bindsym Print                                     mode "$mode_screenshot"
+mode "$mode_screenshot" {
+  bindsym s --release                             exec flameshot gui, mode "default"
+  bindsym e                                       exec flameshot full --clipboard --path $screenshotspath, mode "default"
+  bindsym f                                       exec flameshot screen --clipboard --path $screenshotspath, mode "default"
+
+  bindsym Return                                  mode "default"
+  bindsym Escape                                  mode "default"
+}
+####################
+
+
+
+## workspace-mode
+#
+set $mode_workspace                               [m]ove, [d]isplay
+set $mode_workspace_move                          [h | ←], [j | ↓], [k | ↑], [l | →]
+set $mode_workspace_display                       [h | ←], [j | ↓], [k | ↑], [l | →]
+#
+bindsym $mod+Shift+w mode                         "$mode_workspace"
+#
+mode "$mode_workspace" {
+  bindsym m                                       mode "$mode_workspace_move" 
+
+  bindsym Return                                  mode "default"
+  bindsym Escape                                  mode "default"
+}
+#
+mode "$mode_workspace_move" {
+  bindsym h                                       exec i3-msg move workspace to output left, mode "default"
+  bindsym j                                       exec i3-msg move workspace to output down, mode "default"
+  bindsym k                                       exec i3-msg move workspace to output up, mode "default"
+  bindsym l                                       exec i3-msg move workspace to output right, mode "default"
+
+  bindsym Left                                    exec i3-msg move workspace to output left, mode "default"
+  bindsym Down                                    exec i3-msg move workspace to output down, mode "default"
+  bindsym Up                                      exec i3-msg move workspace to output up, mode "default"
+  bindsym Right                                   exec i3-msg move workspace to output right, mode "default"
+
+  bindsym Return                                  mode "default"
+  bindsym Escape                                  mode "default"
+}
+###################
+
+
+
+## resize-mode
+#
+bindsym $mod+r mode                               "$mode_resize"
+#
+mode "$mode_resize" {
+  bindsym l                                       resize grow width 5 px or 5 ppt
+  bindsym h                                       resize shrink width 5 px or 5 ppt
+  bindsym j                                       resize grow height 5 px or 5 ppt
+  bindsym k                                       resize shrink height 5 px or 5 ppt
+
+  bindsym Left                                    resize shrink width 10 px or 10 ppt
+  bindsym Down                                    resize grow height 10 px or 10 ppt
+  bindsym Up                                      resize shrink height 10 px or 10 ppt
+  bindsym Right                                   resize grow width 10 px or 10 ppt
+
+  bindsym Return                                  mode "default"
+  bindsym Escape                                  mode "default"
+}
+####################
+
+
+
+## gaps-mode
+#
+set $mode_gaps Gaps:                              [o]uter, [i]nner
+set $mode_gaps_outer                              Outer Gaps: +|-|0 [local], Shift + +|-|0 [global]
+set $mode_gaps_inner                              Inner Gaps: +|-|0 [local], Shift + +|-|0 [global]
+#
+bindsym $mod+g mode                               "$mode_gaps"
+#
+mode "$mode_gaps" {
+  bindsym o                                       mode "$mode_gaps_outer"
+  bindsym i                                       mode "$mode_gaps_inner"
+
+  bindsym Return                                  mode "default"
+  bindsym Escape                                  mode "default"
+}
+#
+mode "$mode_gaps_inner" {
+  bindsym plus                                    gaps inner current plus 5
+  bindsym minus                                   gaps inner current minus 5
+  bindsym 0                                       gaps inner current set 0
+
+  bindsym Shift+plus                              gaps inner all plus 5
+  bindsym Shift+minus                             gaps inner all minus 5
+  bindsym Shift+0                                 gaps inner all set 0
+
+  bindsym Return                                  mode "default"
+  bindsym Escape                                  mode "default"
+}
+#
+mode "$mode_gaps_outer" {
+  bindsym plus                                    gaps outer current plus 5
+  bindsym minus                                   gaps outer current minus 5
+  bindsym 0                                       gaps outer current set 10
+
+  bindsym Shift+plus                              gaps outer all plus 5
+  bindsym Shift+minus                             gaps outer all minus 5
+  bindsym Shift+0                                 gaps outer all set 10
+
+  bindsym Return                                  mode "default"
+  bindsym Escape                                  mode "default"
+}
+####################
+
+
+
+##################################################
+#
+# BINDINGS
+#
+##################################################
+
+# dmenu
+bindsym $mod+d                                    exec rofi -show drun
+bindsym $mod+Shift+d                              exec rofi -show run
+bindsym $mod+x                                    exec rrr
+bindsym $mod+s                                    exec sxt
+bindsym $mod+t                                    exec tdo
+bindsym $mod+o                                    exec rofi -show filebrowser
+####################
+
+# terminal
+bindsym $mod+Return                               exec $console "screen -a"
+bindsym $mod+Shift+Return                         exec $console
+####################
+
+# kill 
+bindsym $mod+Shift+q                              kill
+####################
+
+# hide-i3status-bar
+bindsym $mod+m                                    bar mode toggle
+####################
+
+
+##################################################
+#
+# CONTROLS 
+#
+##################################################
+
+## volume-control
+bindsym XF86AudioRaiseVolume                      exec amixer -q set Master 5%+
+bindsym XF86AudioLowerVolume                      exec amixer -q set Master 5%-
+bindsym XF86AudioMute                             exec amixer set Master toggle
+####################
+
+# music-control
+bindsym XF86AudioPlay                             exec playerctl play-pause
+bindsym XF86AudioNext                             exec playerctl next
+bindsym XF86AudioPrev                             exec playerctl previous
+####################
+
+# sreen-brightness-controls
+bindsym XF86MonBrightnessUp                       exec light -A 5 
+bindsym XF86MonBrightnessDown                     exec light -U 5 
+####################
+
+
+
+##################################################
+#
+# wm
+#
+##################################################
+
+## i3states
+#
+# i3states-restart
+bindsym $mod+Shift+r                              restart
+####################
+
+## configuration
+#
+# configuration-reload
+bindsym $mod+Shift+c                              reload
+####################
+
+## workspaces
+#
+# workspaces-navigation
+bindsym $mod+Ctrl+Right                           workspace next
+bindsym $mod+Ctrl+Left                            workspace prev
+#
+# workspaces-names
+set $ws0                                          "10"
+set $ws1                                          1
+set $ws2                                          2
+set $ws3                                          3
+set $ws4                                          4
+set $ws5                                          5
+set $ws6                                          6
+set $ws7                                          7
+set $ws8                                          8
+set $ws9                                          9
+# workspaces-switching
+bindsym $mod+0                                    workspace $ws0
+bindsym $mod+1                                    workspace $ws1
+bindsym $mod+2                                    workspace $ws2
+bindsym $mod+3                                    workspace $ws3
+bindsym $mod+4                                    workspace $ws4
+bindsym $mod+5                                    workspace $ws5
+bindsym $mod+6                                    workspace $ws6
+bindsym $mod+7                                    workspace $ws7
+bindsym $mod+8                                    workspace $ws8
+bindsym $mod+9                                    workspace $ws9
+####################
+
+## containers
+#
+# containers-split-orientation
+bindsym $mod+q                                    split toggle
+# containers-layout-style
+bindsym $mod+w                                    layout tabbed
+bindsym $mod+e                                    layout toggle split
+# containers-move-focused-to-workspace
+bindsym $mod+Shift+0                              move container to workspace $ws0
+bindsym $mod+Shift+1                              move container to workspace $ws1
+bindsym $mod+Shift+2                              move container to workspace $ws2
+bindsym $mod+Shift+3                              move container to workspace $ws3
+bindsym $mod+Shift+4                              move container to workspace $ws4
+bindsym $mod+Shift+5                              move container to workspace $ws5
+bindsym $mod+Shift+6                              move container to workspace $ws6
+bindsym $mod+Shift+7                              move container to workspace $ws7
+bindsym $mod+Shift+8                              move container to workspace $ws8
+bindsym $mod+Shift+9                              move container to workspace $ws9
+# containers-move-to-workspace-with-focused
+bindsym $mod+Ctrl+0                               move container to workspace $ws0; workspace $ws0
+bindsym $mod+Ctrl+1                               move container to workspace $ws1; workspace $ws1
+bindsym $mod+Ctrl+2                               move container to workspace $ws2; workspace $ws2
+bindsym $mod+Ctrl+3                               move container to workspace $ws3; workspace $ws3
+bindsym $mod+Ctrl+4                               move container to workspace $ws4; workspace $ws4
+bindsym $mod+Ctrl+5                               move container to workspace $ws5; workspace $ws5
+bindsym $mod+Ctrl+6                               move container to workspace $ws6; workspace $ws6
+bindsym $mod+Ctrl+7                               move container to workspace $ws7; workspace $ws7
+bindsym $mod+Ctrl+8                               move container to workspace $ws8; workspace $ws8
+bindsym $mod+Ctrl+9                               move container to workspace $ws9; workspace $ws9
+####################
+
+## windows
+#
+# focus-window-arrows
+bindsym $mod+Left                                 focus left
+bindsym $mod+Down                                 focus down
+bindsym $mod+Up                                   focus up
+bindsym $mod+Right                                focus right
+# move-window-arrows
+bindsym $mod+Shift+Left                           move left
+bindsym $mod+Shift+Down                           move down
+bindsym $mod+Shift+Up                             move up
+bindsym $mod+Shift+Right                          move right
+# window-fullscreen
+bindsym $mod+f                                    fullscreen toggle
+# window-floating
+bindsym $mod+Shift+space                          floating toggle
+# window-tiling
+bindsym $mod+space                                focus mode_toggle
+# window-sticky
+bindsym $mod+Shift+s                              sticky toggle
+# hide borders
+# source: [1]
+for_window [class="^.*"] border pixel 1
+# source: [2]
+for_window [floating] [class="kitty"]             resize set 800 600
+####################
+
+
+
+##################################################
+#
+# i3 STATUS
+#
+##################################################
+
+bar {
+  mode invisible
+  colors {
+    background                                    #101218
+    statusline                                    #2f343f
+    separator                                     #4b5262
+
+    # colour of border, background, and text
+    focused_workspace                             #2f343f #bf616a #d8dee8
+    active_workspace                              #2f343f #2f343f #d8dee8
+    inactive_workspace                            #2f343f #2f343f #d8dee8
+    urgent_workspacei                             #2f343f #ebcb8b #2f343f
+  }
+  status_command                                  i3status
+}
+####################
+
+
+
+##################################################
+#
+# sources
+#
+##################################################
+# [1]: https://gist.github.com/lirenlin/9892945?permalink_comment_id=4312849#gistcomment-4312849
+# [2]: https://github.com/i3/i3/issues/3588#issuecomment-454764423
