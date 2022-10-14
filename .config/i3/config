@@ -41,6 +41,9 @@ set $shell                                        bash
 #
 ##################################################
 
+# notifications
+exec --no-startup-id                              dunst
+
 # wallpaper
 exec --no-startup-id                              hsetroot -cover ~/pictures/walls/wallpaper
 
