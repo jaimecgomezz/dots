@@ -25,7 +25,7 @@ windowlist string "%{= dR} %{= dR} %n  %t %{-} %=%{= dd}"
 #
 rendition so =02                                                                # vertical region divider style
 caption title "%{= dR} %3n %t %=%{= dd}"                                        # captions title definition
-caption always "%{=b kR} %n:%t %?%F%{= kK}%:%{=u kR}%?  %h %-024=%{+b} %C%a %D %d %M %Y%{= db}"
+caption always "%{=b kK} %n:%t %?%F%{= kK}%:%{=u kR}%?  %h %-024=%{+b} %C%a %D %d %M %Y%{= db}"
 ####################
 
 
