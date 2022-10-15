@@ -2,7 +2,6 @@
 cmd([[colorscheme horizon]])
 
 -- syntax
-cmd([[syntax on]])
 cmd([[hi Conceal ctermbg=none]])
 cmd([[filetype plugin indent on]])
 

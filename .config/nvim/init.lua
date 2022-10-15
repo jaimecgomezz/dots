@@ -1,3 +1,4 @@
+
 local present, impatient = pcall(require, "impatient")
 
 if present then
@@ -5,12 +6,12 @@ if present then
 end
 
 local modules = {
+	"globals",
+	"plugins",
 	"utils",
-    "globals",
 	"options",
-    "mappings",
-    "commands",
-    "plugins",
+	"commands",
+	"mappings",
 }
 
 for _, module in ipairs(modules) do

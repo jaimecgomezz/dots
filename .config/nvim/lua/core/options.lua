@@ -1,4 +1,5 @@
 -- options
+opt("syntax", true)
 opt("wrap", false)
 opt("title", true)
 opt("spell", false)
