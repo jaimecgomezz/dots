@@ -79,10 +79,10 @@ ex() {
 # ----------------------------------------------------------
 
 # custom config
-cBRACKETS="\[\e[38;5;243m\]"	# Brackets around each data item
-cERROR="\[\e[38;5;124m\]"		# Error block when previous command did not return 0
-cPWD="\[\033[0m\]"				# Color of current directory
-cCMD="\[\033[0m\]"				# Color of the command you type
+cBRACKETS="\[\e[38;5;243m\]" # Brackets around each data item
+cERROR="\[\e[38;5;124m\]"    # Error block when previous command did not return 0
+cPWD="\[\033[0m\]"           # Color of current directory
+cCMD="\[\033[0m\]"           # Color of the command you type
 
 # Enable block
 eERR=1  # Previous command return status tracker
@@ -182,7 +182,6 @@ function promptcmd() {
 		fi
 	fi
 
-
 	#---------------------------------------------------------
 	# Third Static Block - Current Directory
 	#---------------------------------------------------------
@@ -211,27 +210,27 @@ load_prompt
 # source: https://github.com/tinted-theming/base16-fzf
 _gen_fzf_default_opts() {
 
-local color00='#1c1e26'
-local color01='#232530'
-local color02='#2e303e'
-local color03='#6f6f70'
-local color04='#9da0a2'
-local color05='#cbced0'
-local color06='#dcdfe4'
-local color07='#e3e6ee'
-local color08='#e95678'
-local color09='#fab795'
-local color0A='#fac29a'
-local color0B='#29d398'
-local color0C='#59e1e3'
-local color0D='#26bbd9'
-local color0E='#ee64ac'
-local color0F='#f09383'
+	local color00='#1c1e26'
+	local color01='#232530'
+	local color02='#2e303e'
+	local color03='#6f6f70'
+	local color04='#9da0a2'
+	local color05='#cbced0'
+	local color06='#dcdfe4'
+	local color07='#e3e6ee'
+	local color08='#e95678'
+	local color09='#fab795'
+	local color0A='#fac29a'
+	local color0B='#29d398'
+	local color0C='#59e1e3'
+	local color0D='#26bbd9'
+	local color0E='#ee64ac'
+	local color0F='#f09383'
 
-export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS"\
-" --color=bg+:$color01,bg:$color00,spinner:$color0C,hl:$color0D"\
-" --color=fg:$color04,header:$color0D,info:$color0A,pointer:$color0C"\
-" --color=marker:$color0C,fg+:$color06,prompt:$color0A,hl+:$color0D"
+	export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS""\
+ --color=bg+:$color01,bg:$color00,spinner:$color0C,hl:$color0D""\
+ --color=fg:$color04,header:$color0D,info:$color0A,pointer:$color0C""\
+ --color=marker:$color0C,fg+:$color06,prompt:$color0A,hl+:$color0D"
 
 }
 
