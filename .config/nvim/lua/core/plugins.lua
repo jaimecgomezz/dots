@@ -20,6 +20,22 @@ return require("packer").startup(function(use)
 
     -- colorschemes
     use('ntk148v/vim-horizon')
+    use({"cocopon/iceberg.vim"})
+    use({"rmehri01/onenord.nvim"})
+    use({"bluz71/vim-nightfly-guicolors"})
+    use({"andersevenrud/nordic.nvim"})
+    use({"ellisonleao/gruvbox.nvim"})
+    use({"frenzyexists/aquarium-vim"})
+    use({
+        "shaunsingh/nord.nvim",
+        config = function()
+            vim.g.nord_contrast = true
+            vim.g.nord_borders = true
+            vim.g.nord_uniform_diff_background = true
+
+            require('nord').set()
+        end
+    })
 
     -- statusline
     use({
@@ -27,7 +43,7 @@ return require("packer").startup(function(use)
         requires = {"kyazdani42/nvim-web-devicons", opt = true},
         config = function()
             require("lualine").setup({
-                options = {icons_enabled = true, theme = "horizon"},
+                options = {icons_enabled = true, theme = "nord"},
                 sections = {lualine_a = {{"filename", path = 1}}}
             })
         end
@@ -41,6 +57,7 @@ return require("packer").startup(function(use)
             run = ":TSUpdate",
             config = function()
                 require("nvim-treesitter.configs").setup({
+                    auto_install = true,
                     ensure_installed = {
                         "bash", "dockerfile", "dot", "go", "graphql", "html",
                         "http", "javascript", "json", "json5", "lua", "make",
@@ -51,6 +68,7 @@ return require("packer").startup(function(use)
                         enable = true,
                         additional_vim_regex_highlighting = false
                     },
+                    ident = {enable = true},
                     incremental_selection = {
                         enable = true,
                         keymaps = {
@@ -75,21 +93,6 @@ return require("packer").startup(function(use)
                 })
             end
         }
-    })
-
-    -- completion
-    use({
-        {
-            "ms-jpq/coq_nvim",
-            run = "python3 -m coq deps",
-            config = function()
-                vim.g.coq_settings = {
-                    auto_start = "shut-up",
-                    keymap = {manual_complete = ""},
-                    clients = {snippets = {warn = {}}}
-                }
-            end
-        }, {"ms-jpq/coq.artifacts", branch = "artifacts"}
     })
 
     -- filer
@@ -140,7 +143,9 @@ return require("packer").startup(function(use)
             g.fzfSwitchProjectAlwaysChooseFile = 0
             g.fzfSwitchProjectGitInitBehavior = "none"
             g.fzfSwitchProjectWorkspaces = {
-                "~/repos/jaimecgomezz", "~/repos/aleph"
+                "~/repos/jaimecgomezz", "~/repos/aleph", "~/repos/telemetry",
+                "~/repos/dry", "~/repos/crates",
+                "~/repos/jaimecgomezz/learning", "~/repos/vim"
             }
 
             local opts = {silent = true, noremap = true}
@@ -210,25 +215,6 @@ return require("packer").startup(function(use)
                 map("n", "<leader>fw", "<cmd>Telescope grep_string<cr>", opts)
                 map("n", "<leader>ff",
                     "<cmd>Telescope live_grep hidden=true<cr>", opts)
-                map("n", "<leader>fm",
-                    "<cmd>Telescope man_pages previewer=false<cr>", opts)
-                map("n", "<leader>fp",
-                    "<cmd>Telescope pickers previewer=false<cr>", opts)
-                map("n", "<leader>fk",
-                    "<cmd>Telescope keymaps previewer=false<cr>", opts)
-
-                -- git pickers
-                map("n", "<leader>gS", "<cmd>Telescope git_stash<cr>", opts)
-                map("n", "<leader>gs", "<cmd>Telescope git_status<cr>", opts)
-                map("n", "<leader>gc", "<cmd>Telescope git_commits<cr>", opts)
-                map("n", "<leader>gb", "<cmd>Telescope git_branches<cr>", opts)
-
-                -- history pickers
-                map("n", "<leader>hf",
-                    "<cmd>Telescope oldfiles previewer=false<cr>", opts)
-                map("n", "<leader>hc", "<cmd>Telescope command_history<cr>",
-                    opts)
-                map("n", "<leader>hs", "<cmd>Telescope search_history<cr>", opts)
 
                 -- finder pickers
                 map("n", "<c-p>", "<cmd>Telescope find_files hidden=true<cr>",
@@ -408,6 +394,35 @@ return require("packer").startup(function(use)
     -- csv
     use({"chrisbra/csv.vim"})
 
+    -- errors
+    use({"kyazdani42/nvim-web-devicons"})
+
+    -- completion
+    use({
+        {
+            "ms-jpq/coq_nvim",
+            run = "python3 -m coq deps",
+            config = function()
+                vim.g.coq_settings = {
+                    auto_start = "shut-up",
+                    keymap = {manual_complete = ""},
+                    clients = {snippets = {warn = {}}}
+                    -- display = {
+                    --     preview = {
+                    --         border = {
+                    --             {"A", "NormalFloat"}, {"B", "NormalFloat"},
+                    --             {"C", "NormalFloat"}, {"D", "NormalFloat"},
+                    --             {"E", "NormalFloat"}, {"F", "NormalFloat"},
+                    --             {"G", "NormalFloat"}, {"H", "NormalFloat"}
+                    --         }
+                    --     }
+                    -- }
+                }
+            end
+        }, {"ms-jpq/coq.artifacts", branch = "artifacts"}
+    })
+
+    -- lint, formatting
     use({
         "jose-elias-alvarez/null-ls.nvim",
         config = function()
@@ -425,19 +440,22 @@ return require("packer").startup(function(use)
                     -- formatting.black,
                     -- json
                     diagnostics.jsonlint, formatting.jq, -- lua
-                    diagnostics.luacheck, formatting.lua_format, -- ruby
+                    diagnostics.selene, formatting.lua_format, -- ruby
                     diagnostics.rubocop.with({
                         command = {"bundle", "exec", "rubocop"}
                     }),
                     formatting.rubocop
                         .with({command = {"bundle", "exec", "rubocop"}}),
-
                     -- sql
-                    diagnostics.sqlfluff, formatting.sqlfluff, -- shell
-                    diagnostics.shellcheck, formatting.shfmt, -- javascript
-                    diagnostics.eslint, formatting.prettier, -- go
-                    diagnostics.revive, formatting.gofmt, -- rust
-                    formatting.rustfmt
+                    diagnostics.sqlfluff.with({
+                        extra_args = {"--dialect", "postgres"}
+                    }),
+                    formatting.sqlfluff
+                        .with({extra_args = {"--dialect", "postgres"}}),
+                    diagnostics.shellcheck, formatting.shfmt, -- sql
+                    diagnostics.eslint_d, formatting.prettier, -- javascript
+                    diagnostics.revive, formatting.gofmt, -- go
+                    formatting.rustfmt -- rust
                 },
 
                 on_attach = function(client, bufnr)
@@ -464,17 +482,150 @@ return require("packer").startup(function(use)
         end
     })
 
-    use({"kyazdani42/nvim-web-devicons"})
     use({
-        "folke/trouble.nvim",
-        requires = "kyazdani42/nvim-web-devicons",
+        "neovim/nvim-lspconfig",
         config = function()
-            require("trouble").setup {auto_close = true}
+            -- Mappings.
+            -- See `:help vim.diagnostic.*` for documentation on any of the below functions
+            local opts = {noremap = true, silent = true}
+            vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+            vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+            vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+            vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
 
-            local opts = {silent = true, noremap = true}
+            -- Use an on_attach function to only map the following keys
+            -- after the language server attaches to the current buffer
+            local on_attach = function(client, bufnr)
+                -- Enable completion triggered by <c-x><c-o>
+                vim.api.nvim_buf_set_option(bufnr, 'omnifunc',
+                                            'v:lua.vim.lsp.omnifunc')
 
-            map("n", "<leader>e", "<cmd>TroubleToggle<cr>", opts)
+                -- Mappings.
+                -- See `:help vim.lsp.*` for documentation on any of the below functions
+                local bufopts = {noremap = true, silent = true, buffer = bufnr}
+                vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+                vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+                vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+                vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+                vim.keymap
+                    .set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+                vim.keymap.set('n', '<space>wa',
+                               vim.lsp.buf.add_workspace_folder, bufopts)
+                vim.keymap.set('n', '<space>wr',
+                               vim.lsp.buf.remove_workspace_folder, bufopts)
+                vim.keymap.set('n', '<space>wl', function()
+                    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+                end, bufopts)
+                vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition,
+                               bufopts)
+                vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
+                vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action,
+                               bufopts)
+                vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+                vim.keymap.set('n', '<space>f', function()
+                    vim.lsp.buf.format {async = true}
+                end, bufopts)
+            end
+
+            local lsp = require('lspconfig')
+
+            lsp.bashls.setup({on_attach = on_attach})
+            lsp.dockerls.setup({on_attach = on_attach})
+            lsp.elixirls.setup({on_attach = on_attach})
+            lsp.gopls.setup({on_attach = on_attach})
+            lsp.html.setup({on_attach = on_attach})
+            lsp.jsonls.setup({on_attach = on_attach})
+            lsp.pylsp.setup({on_attach = on_attach})
+            lsp.rust_analyzer.setup({on_attach = on_attach})
+            lsp.solargraph.setup({on_attach = on_attach})
+            lsp.sqlls.setup({on_attach = on_attach})
         end
-
     })
+    use({
+        "simrat39/rust-tools.nvim",
+        config = function()
+            local rt = require("rust-tools")
+
+            rt.setup({})
+        end
+    })
+    use({
+        'williamboman/mason.nvim',
+        config = function() require("mason").setup() end
+    })
+    use({
+        'williamboman/mason-lspconfig.nvim',
+        config = function() require("mason-lspconfig").setup() end
+    })
+
+    -- Completion framework:
+    -- use({
+    --     {
+    --         "hrsh7th/nvim-cmp",
+    --         config = function()
+    --             -- Completion Plugin Setup
+    --             local cmp = require 'cmp'
+    --             local capabilities =
+    --                 require('cmp_nvim_lsp').default_capabilities()
+
+    --             cmp.setup({
+    --                 capabilities = capabilities,
+    --                 -- Enable LSP snippets
+    --                 snippet = {
+    --                     expand = function(args)
+    --                         vim.fn["UltiSnips#Anon"](args.body)
+    --                     end
+    --                 },
+    --                 mapping = {
+    --                     ['<C-p>'] = cmp.mapping.select_prev_item(),
+    --                     ['<C-n>'] = cmp.mapping.select_next_item(),
+    --                     -- Add tab support
+    --                     ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+    --                     ['<Tab>'] = cmp.mapping.select_next_item(),
+    --                     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    --                     ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    --                     ['<C-Space>'] = cmp.mapping.complete(),
+    --                     ['<C-e>'] = cmp.mapping.close(),
+    --                     ['<CR>'] = cmp.mapping.confirm({
+    --                         behavior = cmp.ConfirmBehavior.Insert,
+    --                         select = true
+    --                     })
+    --                 },
+    --                 -- Installed sources:
+    --                 sources = {
+    --                     {name = 'path'}, -- file paths
+    --                     {name = 'nvim_lsp', keyword_length = 3}, -- from language server
+    --                     {name = 'nvim_lsp_signature_help'}, -- display function signatures with current parameter emphasized
+    --                     {name = 'nvim_lua', keyword_length = 2}, -- complete neovim's Lua runtime API such vim.lsp.*
+    --                     {name = 'buffer', keyword_length = 2}, -- source current buffer
+    --                     {name = 'ultisnips', keyword_length = 2}, -- nvim-cmp source for vim-vsnip 
+    --                     {name = 'calc'} -- source for math calculation
+    --                 },
+    --                 window = {
+    --                     completion = cmp.config.window.bordered(),
+    --                     documentation = cmp.config.window.bordered()
+    --                 },
+    --                 formatting = {
+    --                     fields = {'menu', 'abbr', 'kind'},
+    --                     format = function(entry, item)
+    --                         local menu_icon = {
+    --                             nvim_lsp = 'λ',
+    --                             vsnip = '⋗',
+    --                             buffer = 'Ω',
+    --                             path = '🖫'
+    --                         }
+    --                         item.menu = menu_icon[entry.source.name]
+    --                         return item
+    --                     end
+    --                 }
+    --             })
+    --         end
+    --     }, -- LSP completion source:
+    --     {"hrsh7th/cmp-nvim-lsp"}, -- Useful completion sources:
+    --     {"hrsh7th/cmp-nvim-lua"}, {"hrsh7th/cmp-nvim-lsp-signature-help"},
+    --     {"hrsh7th/cmp-path"}, {"hrsh7th/cmp-buffer"}, {"SirVer/ultisnips"},
+    --     {"honza/vim-snippets"}, {"quangnguyen30192/cmp-nvim-ultisnips"}
+    -- })
+
+    use({"puremourning/vimspector"})
 end)

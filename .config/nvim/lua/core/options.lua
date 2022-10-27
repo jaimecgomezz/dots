@@ -39,3 +39,17 @@ opt("wildmode", "longest,full")
 opt("clipboard", "unnamedplus") -- [2]
 opt("backspace", "indent,eol,start")
 opt("wildignore", [[node_modules/**,coverage/**,target/**,tmp/**,.git/,tags,]])
+-- completion
+vim.opt.completeopt = {'menuone', 'noselect', 'noinsert'}
+vim.opt.shortmess = vim.opt.shortmess + { c = true}
+vim.api.nvim_set_option('updatetime', 300) 
+
+vim.cmd([[
+set signcolumn=yes
+autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
+]])
+
+
+-- Treesitter folding 
+vim.wo.foldmethod = 'expr'
+vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
