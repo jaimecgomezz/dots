@@ -45,13 +45,13 @@ set $shell                                        bash
 exec --no-startup-id                              dunst
 
 # wallpaper
-exec --no-startup-id                              hsetroot -cover ~/pictures/walls/wallpaper
+exec --no-startup-id                              hsetroot -cover ~/pictures/wallpaper
 
 # keyboard
 exec --no-startup-id                              setxkbmap us -variant altgr-intl -option 'ctrl:nocaps'
 
 # lock
-exec --no-startup-id                              xidlehook --not-when-audio --not-when-fullscreen --timer 600 "exit-system lock" "" &
+exec --no-startup-id                              xidlehook --not-when-fullscreen --not-when-audio --timer 600 'xrandr --output "$PRIMARY_DISPLAY" --brightness .5' 'xrandr --output "$PRIMARY_DISPLAY" --brightness 1' --timer 300 'xrandr --output "$PRIMARY_DISPLAY" --brightness 1; lok' ''
 ####################
 
 
