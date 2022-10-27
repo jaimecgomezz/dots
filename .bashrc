@@ -7,7 +7,7 @@
 ############## lessons-learned
 # 1. non-interactive shells
 # sources .bash_profile or
-# .profile at the beggining
+# .profile at the beginning
 #
 # 2. env-variables are set at
 # the top prior to the
@@ -37,9 +37,11 @@ export PATH="${PATH}:${SCRIPTS_PATH}"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 
 # Initializers
+. "$HOME/.cargo/env"
 eval "$(rbenv init -)"
 
 # Aliases
+alias tt='taskwarrior-tui'
 alias cz='npx git-cz -S --disable-emoji'
 alias configs='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
