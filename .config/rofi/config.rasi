@@ -5,5 +5,5 @@ configuration {
   font: "JetBrains Mono 9";
 }
 
-@theme "dark.rasi"
+@theme "nord.rasi"
 @import "base.rasi"
