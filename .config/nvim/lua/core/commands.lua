@@ -15,7 +15,7 @@ cmd([[colorscheme nord]])
 -- cmd([[highlight DiagnosticFloatingInfo guibg=NONE]])
 -- cmd([[highlight DiagnosticFloatingHint guibg=NONE]])
 
--- cmd([[highlight Comment guifg=#6c6f93]])
+cmd([[highlight Title guifg=#f09483]])
 -- cmd([[highlight diffRemoved guifg=#ec6a88]])
 -- cmd([[highlight StartifyHeader guifg=#f09483]])
 

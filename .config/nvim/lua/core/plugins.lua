@@ -237,27 +237,6 @@ return require("packer").startup(function(use)
                 map("n", "<leader>fe", "<cmd>Telescope env theme=dropdown<cr>",
                     opts)
             end
-        }, {
-            "da-moon/telescope-toggleterm.nvim",
-            requires = {
-                "akinsho/nvim-toggleterm.lua", "nvim-telescope/telescope.nvim",
-                "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim"
-            },
-            config = function()
-                require("telescope-toggleterm").setup({
-                    telescope_mappings = {
-                        ["<c-k>"] = require("telescope-toggleterm").actions
-                            .exit_terminal
-                    }
-                })
-
-                require("telescope").load_extension("toggleterm")
-
-                local opts = {silent = true, noremap = true}
-
-                map("n", "<leader>ft",
-                    "<cmd>Telescope toggleterm theme=dropdown<cr>", opts)
-            end
         }
     })
 
@@ -349,7 +328,6 @@ return require("packer").startup(function(use)
     use("ludovicchabant/vim-gutentags")
     use({
         "preservim/tagbar",
-        cmd = {"Tagbar", "TagbarToggle"},
         config = function()
             g.tagbar_autoclose = 1
             g.tagbar_width = 80
@@ -358,7 +336,13 @@ return require("packer").startup(function(use)
             g.tagbar_show_data_type = 1
             g.tagbar_autoshowtag = 1
             g.tagbar_ignore_anonymous = 1
+            g.tagbar_show_visibility = 1
+            g.tagbar_previewwin_pos = ''
+            g.tagbar_autopreview = 1
             g.tagbar_sort = 0
+
+            local opts = {silent = true, noremap = true}
+            map("n", "<localleader>tt", "<cmd>TagbarToggle<cr>", opts)
         end
     })
 
@@ -407,16 +391,6 @@ return require("packer").startup(function(use)
                     auto_start = "shut-up",
                     keymap = {manual_complete = ""},
                     clients = {snippets = {warn = {}}}
-                    -- display = {
-                    --     preview = {
-                    --         border = {
-                    --             {"A", "NormalFloat"}, {"B", "NormalFloat"},
-                    --             {"C", "NormalFloat"}, {"D", "NormalFloat"},
-                    --             {"E", "NormalFloat"}, {"F", "NormalFloat"},
-                    --             {"G", "NormalFloat"}, {"H", "NormalFloat"}
-                    --         }
-                    --     }
-                    -- }
                 }
             end
         }, {"ms-jpq/coq.artifacts", branch = "artifacts"}
@@ -628,4 +602,15 @@ return require("packer").startup(function(use)
     -- })
 
     use({"puremourning/vimspector"})
+    use({
+        "sindrets/diffview.nvim",
+        requires = "nvim-lua/plenary.nvim",
+        config = function()
+            map("n", "<localleader>dd", "<cmd>DiffviewOpen<cr>", opts)
+            map("n", "<localleader>dp", "<cmd>DiffviewFileHistory<cr>", opts)
+            map("n", "<localleader>df", "<cmd>DiffviewFileHistory %<cr>", opts)
+            map("n", "<localleader>dD", "<cmd>DiffviewClose<cr>", opts)
+            map("n", "<localleader>dr", "<cmd>DiffviewRefresh<cr>", opts)
+        end
+    })
 end)
