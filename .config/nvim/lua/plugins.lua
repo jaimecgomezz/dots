@@ -23,6 +23,8 @@ return require("packer").startup(function(use)
             vim.g.nord_contrast = true
             vim.g.nord_borders = true
             vim.g.nord_uniform_diff_background = true
+
+            require('nord').set()
         end
     })
 
@@ -131,7 +133,8 @@ return require("packer").startup(function(use)
             vim.g.fzfSwitchProjectWorkspaces = {
                 "~/repos/jaimecgomezz", "~/repos/aleph", "~/repos/telemetry",
                 "~/repos/dry", "~/repos/crates",
-                "~/repos/jaimecgomezz/learning", "~/repos/vim"
+                "~/repos/jaimecgomezz/learning", "~/repos/vim",
+                "~/repos/learning"
             }
         end
     })
@@ -273,7 +276,8 @@ return require("packer").startup(function(use)
                 vim.g.coq_settings = {
                     auto_start = "shut-up",
                     keymap = {manual_complete = ""},
-                    clients = {snippets = {warn = {}}}
+                    clients = {snippets = {warn = {}}},
+                    display = {pum = {source_context = {"", ""}}}
                 }
             end
         }, {"ms-jpq/coq.artifacts", branch = "artifacts"}
