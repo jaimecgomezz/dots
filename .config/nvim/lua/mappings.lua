@@ -35,8 +35,8 @@ map("n", "<leader>pw", "<cmd>pwd<cr>", opts)
 -- nvim
 map("n", "<leader>vq", "<cmd>qa<cr>", opts)
 map("n", "<leader>vQ", "<cmd>qa!<cr>", opts)
-map("n", "<leader>ve", "<cmd>e ~/.config/nvim/init.lua<cr>", opts)
-map("n", "<leader>vr", "<cmd>so ~/.config/nvim/init.lua<cr>", opts)
+map("n", "<localleader>ve",
+    "<cmd>cd ~/.config/nvim<cr><cmd>:e ~/.config/nvim/init.lua<cr>", opts)
 
 -- lines-movement
 map("n", "<C-j>", "<cmd>m .+1<cr>==", opts)
