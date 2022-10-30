@@ -16,7 +16,7 @@ return require("packer").startup(function(use)
         requires = {"kyazdani42/nvim-web-devicons", opt = true},
         config = function()
             require("lualine").setup({
-                options = {icons_enabled = true, theme = "nord"},
+                options = {icons_enabled = true},
                 sections = {lualine_a = {{"filename", path = 1}}}
             })
         end

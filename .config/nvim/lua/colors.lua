@@ -1,4 +1,4 @@
-local theme = "nord"
+local theme = "paradise"
 
 local cmd = vim.cmd
 
