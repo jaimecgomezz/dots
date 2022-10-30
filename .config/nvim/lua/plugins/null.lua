@@ -6,8 +6,8 @@ local formatting = nls.builtins.formatting
 
 nls.setup({
     sources = {
-        diagnostics.actionlint, diagnostics.codespell, diagnostics.jsonlint,
-        formatting.jq, diagnostics.luacheck, formatting.lua_format,
+        diagnostics.actionlint, diagnostics.jsonlint, formatting.jq,
+        diagnostics.luacheck, formatting.lua_format,
         diagnostics.rubocop.with({command = {"bundle", "exec", "rubocop"}}),
         formatting.rubocop.with({command = {"bundle", "exec", "rubocop"}}),
         diagnostics.sqlfluff.with({extra_args = {"--dialect", "postgres"}}),
