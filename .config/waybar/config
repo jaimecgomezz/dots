@@ -1,0 +1,115 @@
+/* Thank you to u/Krudjan for sharing their dotfiles, I used
+   https://gitlab.com/Krudjan/dotfiles/tree/master/waybar/.config/waybar
+   as a reference when writing this */
+
+{
+  "layer": "bottom", // Waybar at top layer
+  "position": "bottom", // Waybar at the bottom of your screen
+  "height": 10, // Waybar height
+  // "width": 1280, // Waybar width
+  // Choose the order of the modules
+  "modules-left": [
+    "custom/menu",
+    "sway/workspaces",
+    "sway/mode"
+  ],
+  "modules-center": [],
+  "modules-right": [
+    "pulseaudio",
+    "cpu",
+    "memory",
+    "network",
+    "custom/bluetooth",
+    "battery",
+    "clock"
+  ],
+  "gtk-layer-shell": true,
+  // Modules configuration
+  "sway/workspaces": {
+    "disable-scroll": true,
+    "format": "{name}"
+  },
+  "sway/mode": {
+    "format": "!"
+  },
+  "clock": {
+    "format": "{:%a, %d. %b %H:%M}"
+  },
+  "cpu": {
+    "format": "{usage}% "
+  },
+  "memory": {
+    "format": "{}% ",
+    "on-click": "kitty -e htop"
+  },
+  "battery": {
+    "bat": "BAT0",
+    "interval": 60,
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{capacity}% {icon}",
+    "format-icons": ["", "", "", "", ""],
+    "max-length": 25
+  },
+  "custom/vpn": {
+    "interval": 5,
+    "format": "{}",
+    "return-type": "json",
+    "exec": "~/.config/waybar/modules/vpn.sh",
+    "on-click": "env XDG_CURRENT_DESKTOP=GNOME gnome-control-center network"
+  },
+  "network": {
+    "format-wifi": "",
+    "format-ethernet": "",
+    "format-disconnected": "",
+    "on-click": "env XDG_CURRENT_DESKTOP=GNOME gnome-control-center wifi"
+  },
+  "custom/bluetooth": {
+    "format": "",
+    "interval": 5,
+    "return-type": "json",
+    "exec": "~/.config/waybar/modules/bluetooth.sh",
+    "on-click": "blueberry"
+  },
+  "pulseaudio": {
+    "scroll-step": 5,
+    "format": "{volume}% {icon}",
+    "format-bluetooth": "{volume}% {icon}",
+    "format-muted": "",
+    "format-icons": {
+      "headphones": "",
+      "handsfree": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": ["", ""]
+    },
+    "on-click": "pavucontrol"
+  },
+  "custom/pacman": {
+    "format": "{} ",
+    "interval": 3600, // every hour
+    "exec": "pamac checkupdates -a -q | wc -l", // # of updates
+    "on-click": "pamac-manager", // update system
+    "tooltip": false
+  },
+  "tray": {
+    "icon-size": 21,
+    "spacing": 10
+  },
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "",
+      "deactivated": ""
+    }
+  },
+  "custom/menu": {
+    "format": "",
+    "on-click": "sgtk-menu -y 25",
+    "tooltip": false
+  }
+}
