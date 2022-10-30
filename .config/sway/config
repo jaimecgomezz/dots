@@ -1,0 +1,386 @@
+##################################################
+#
+# CONFIGS 
+#
+##################################################
+
+# wm 
+set $mod                                                  Mod4
+floating_modifier                                         Mod4
+set $left                                                 h
+set $down                                                 j
+set $up                                                   k
+set $right                                                l
+####################
+
+# path-definitions
+set $screenshotspath                                      ~/Pictures/screenshots
+####################
+
+# default-apps
+set $menu                                                 dmenu-run-i
+set $locker                                               swaylock
+set $console                                              kitty
+set $multiplexor                                          "screen -a"
+####################
+
+# default-tools
+set $shell                                                bash
+set $tinyimageviewer                                      sxiv 
+set $screenshottaker                                      scrot
+set $imageviewer                                          viewnior
+set $floatter                                             float-runner
+####################
+
+# default-programs-options
+set $screenshotformat                                     "ss-%a-%d%b%y_%H.%M.png"
+####################
+
+# default-varibales
+####################
+
+# includes
+include themes/manjaro
+include config.d/*
+####################
+
+# keyboard
+input * {
+    xkb_layout "us"
+    xkb_variant "altgr-intl"
+    xkb_options "caps"
+}
+####################
+
+# idle configuration
+exec_always swayidle -w \
+        timeout 300 'exec $locking' \
+        timeout 600 'swaymsg "output * dpms off"' \
+        resume 'swaymsg "output * dpms on"' \
+        before-sleep 'exec $locking'
+####################
+
+# bar
+bar {
+  swaybar_command waybar
+  position top
+  height 25
+}
+####################
+
+
+
+##################################################
+#
+# MODES
+#
+##################################################
+
+## workspace-mode
+#
+mode "$mode_workspace" {
+  bindsym h                                               exec i3-msg move workspace to output left, mode "default"
+  bindsym j                                               exec i3-msg move workspace to output down, mode "default"
+  bindsym k                                               exec i3-msg move workspace to output up, mode "default"
+  bindsym l                                               exec i3-msg move workspace to output right, mode "default"
+
+  bindsym Left                                            exec i3-msg move workspace to output left, mode "default"
+  bindsym Down                                            exec i3-msg move workspace to output down, mode "default"
+  bindsym Up                                              exec i3-msg move workspace to output up, mode "default"
+  bindsym Right                                           exec i3-msg move workspace to output right, mode "default"
+
+  bindsym Return                                          mode "default"
+  bindsym Escape                                          mode "default"
+}
+#
+#
+bindsym $mod+Shift+w                                      mode "$mode_workspace"
+###################
+
+## resize-mode
+#
+mode "$mode_resize" {
+  bindsym l                                               resize grow width 5 px or 5 ppt
+  bindsym h                                               resize shrink width 5 px or 5 ppt
+  bindsym j                                               resize grow height 5 px or 5 ppt
+  bindsym k                                               resize shrink height 5 px or 5 ppt
+
+  bindsym Left                                            resize shrink width 10 px or 10 ppt
+  bindsym Down                                            resize grow height 10 px or 10 ppt
+  bindsym Up                                              resize shrink height 10 px or 10 ppt
+  bindsym Right                                           resize grow width 10 px or 10 ppt
+
+  bindsym Return                                          mode "default"
+  bindsym Escape                                          mode "default"
+}
+#
+bindsym $mod+r mode                                       "$mode_resize"
+####################
+
+## gaps-mode
+#
+mode "$mode_gaps" {
+  bindsym o                                               mode "$mode_gaps_outer"
+  bindsym i                                               mode "$mode_gaps_inner"
+
+  bindsym Return                                          mode "default"
+  bindsym Escape                                          mode "default"
+}
+#
+mode "$mode_gaps_inner" {
+  bindsym plus                                            gaps inner current plus 5
+  bindsym minus                                           gaps inner current minus 5
+  bindsym 0                                               gaps inner current set 0
+
+  bindsym Shift+plus                                      gaps inner all plus 5
+  bindsym Shift+minus                                     gaps inner all minus 5
+  bindsym Shift+0                                         gaps inner all set 0
+
+  bindsym Return                                          mode "default"
+  bindsym Escape                                          mode "default"
+}
+#
+mode "$mode_gaps_outer" {
+  bindsym plus                                            gaps outer current plus 5
+  bindsym minus                                           gaps outer current minus 5
+  bindsym 0                                               gaps outer current set 10
+
+  bindsym Shift+plus                                      gaps outer all plus 5
+  bindsym Shift+minus                                     gaps outer all minus 5
+  bindsym Shift+0                                         gaps outer all set 10
+
+  bindsym Return                                          mode "default"
+  bindsym Escape                                          mode "default"
+}
+#
+bindsym $mod+g mode                                       "$mode_gaps"
+####################
+
+
+
+##################################################
+#
+# BINDINGS
+#
+##################################################
+
+# menu
+bindsym $mod+d                                              exec dmenu-run-i
+# bindsym $mod+d                                            exec rofi -width 20 -lines 10 -show drun -font 'Noto Sans 11'
+# bindsym $mod+Shift+d                                      exec rofi -width 20 -lines 10 -show run -font 'Noto Sans 11'
+####################
+
+# terminal
+bindsym $mod+Return                                         exec $console -e $shell -c $multiplexor
+bindsym $mod+Shift+Return                                   exec $floatter $console -e $shell -c $multiplexor
+####################
+
+# handlers
+bindsym $mod+a                                              exec dmenu-wm-apps
+bindsym $mod+t                                              exec dmenu-wm-tools
+bindsym $mod+p                                              exec dmenu-wm-texts
+bindsym $mod+c                                              exec dmenu-wm-configs
+bindsym $mod+i                                              exec dmenu-wm-interactives
+bindsym $mod+x                                              exec dmenu-wm-executables
+bindsym $mod+s                                              exec dmenu-wm-system
+bindsym $mod+l                                              exec dmenu-wm-utils
+
+# universal-opener
+bindsym $mod+o                                              exec dmenu-opener
+bindsym $mod+Shift+o                                        exec "dmenu-opener --update"
+
+# passwords
+bindsym $mod+Shift+p                                        exec "rofi -modi 1P:rofi-1p -show 1P"
+
+# todo
+bindsym $mod+Shift+t                                        exec dmenu-todo
+####################
+
+# windows
+bindsym $mod+Shift+s sticky toggle
+####################
+
+# Screenshots
+bindsym Print exec grim \"$HOME/Pictures/Screenshot_$(date +%Y%m%d)_$(date +%H%M%S).png"
+
+# Part screenshot
+bindsym Ctrl+Print exec slurp | grim -g - \"$HOME/Pictures/Screenshot_$(date +%Y%m%d)_$(date +%H%M%S).png"
+####################
+
+# Kill focused window
+bindsym $mod+Shift+q kill -15
+
+# Reload the configuration file
+bindsym $mod+Shift+r reload
+####################
+
+
+# wm
+bindsym $mod+Shift+e                                        exec swaynag -t warning -m \
+                                                              'You pressed the exit shortcut. What do you want?' \
+                                                              -b 'Logout' 'swaymsg exit' \
+                                                              -b 'Sleep' 'systemctl suspend' \
+                                                              -b 'Reboot' 'systemctl reboot' \
+                                                              -b 'Poweroff' 'systemctl poweroff'
+####################
+
+
+
+##################################################
+#
+# CONTROLS 
+#
+##################################################
+
+## volume-control
+bindsym XF86AudioRaiseVolume                              exec amixer -q set Master 5%+
+bindsym XF86AudioLowerVolume                              exec amixer -q set Master 5%-
+bindsym XF86AudioMute                                     exec amixer set Master toggle
+####################
+
+# music-control
+bindsym XF86AudioPlay                                     exec playerctl play-pause
+bindsym XF86AudioNext                                     exec playerctl next
+bindsym XF86AudioPrev                                     exec playerctl previous
+####################
+
+# sreen-brightness-controls
+bindsym XF86MonBrightnessUp exec xbacklight -inc 20 
+bindsym XF86MonBrightnessDown exec xbacklight -dec 20 
+####################
+
+
+
+##################################################
+#
+# wm
+#
+##################################################
+
+# focus
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Move the focused window with the same, but add Shift
+bindsym $mod+Shift+$left move left
+bindsym $mod+Shift+$down move down
+bindsym $mod+Shift+$up move up
+bindsym $mod+Shift+$right move right
+# Ditto, with arrow keys
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+####################
+
+# workspaces:
+#
+##Workspace Names
+set $workspace1 "1"
+set $workspace2 "2"
+set $workspace3 "3"
+set $workspace4 "4"
+set $workspace5 "5"
+set $workspace6 "6"
+set $workspace7 "7"
+set $workspace8 "8"
+set $workspace9 "9"
+set $workspace10 "10"
+
+# Switch to workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+####################
+
+# Layout stuff:
+#
+# You can "split" the current object of your focus with
+# $mod+b or $mod+v, for horizontal and vertical splits
+# respectively.
+bindsym $mod+b splith
+bindsym $mod+v splitv
+
+# Switch the current container between different layout styles
+# bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# Make the current focus fullscreen
+bindsym $mod+f fullscreen
+
+# Toggle the current focus between tiling and floating mode
+bindsym $mod+Shift+space floating toggle
+
+# Swap focus between the tiling area and the floating area
+bindsym $mod+space focus mode_toggle
+
+# Move focus to the parent container
+# bindsym $mod+a focus parent
+#
+# Scratchpad:
+#
+# Sway has a "scratchpad", which is a bag of holding for windows.
+# You can send windows there and get them back later.
+
+# Move the currently focused window to the scratchpad
+bindsym $mod+Shift+minus move scratchpad
+
+# Show the next scratchpad window or hide the focused scratchpad window.
+# If there are multiple scratchpad windows, this command cycles through them.
+bindsym $mod+minus scratchpad show
+
+
+
+##################################################
+#
+# AUTOSTART 
+#
+##################################################
+for_window [class="Microsoft-edge-dev"] border none
+
+
+
+##################################################
+#
+# AUTOSTART 
+#
+##################################################
+
+# output
+output * bg '~/Pictures/wallpapers/desktop_wallpaper_25.jpg' fill
+
+# lock
+exec --no-startup-id                                      xidlehook --not-when-audio --not-when-fullscreen --timer 600 "exit-system lock" "" & 
+####################
+
+# other
+exec dbus-daemon --session --address=unix:path=$XDG_RUNTIME_DIR/bus
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec mako
+exec flashfocus
+exec sh ~/.config/sway/scripts/keyring.sh
+include /etc/sway/config.d/*
+#exec nm-applet
+####################
