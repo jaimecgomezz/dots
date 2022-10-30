@@ -8,25 +8,7 @@ return require("packer").startup(function(use)
     use({"nathom/filetype.nvim"})
 
     -- colorschemes
-    use('ntk148v/vim-horizon')
-    use({"cocopon/iceberg.vim"})
-    use({"rmehri01/onenord.nvim"})
-    use({"bluz71/vim-nightfly-guicolors"})
-    use({"andersevenrud/nordic.nvim"})
-    use({"ellisonleao/gruvbox.nvim"})
-    use({"frenzyexists/aquarium-vim"})
-    use({
-        "shaunsingh/nord.nvim",
-        config = function()
-            local vim = vim
-
-            vim.g.nord_contrast = true
-            vim.g.nord_borders = true
-            vim.g.nord_uniform_diff_background = true
-
-            require('nord').set()
-        end
-    })
+    use({"RRethy/nvim-base16"})
 
     -- statusline
     use({

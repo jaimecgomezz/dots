@@ -1,5 +1,6 @@
 local modules = {
-    "plugins", "globals", "options", "diagnostics", "commands", "mappings"
+    "plugins", "globals", "options", "diagnostics", "commands", "mappings",
+    "colors"
 }
 
 for _, module in ipairs(modules) do
@@ -14,3 +15,4 @@ end
 -- [3] https://vi.stackexchange.com/questions/3072/how-can-i-bind-ctrl-space-to-be-esc-when-not-in-insert-mode-and-to-switch-to-in
 -- [4] https://github.com/junegunn/fzf/issues/1393
 -- [5] https://github.com/wbthomason/dotfiles/tree/linux/neovim/.config/nvim
+-- [6] https://github.com/Manas140/Conscious
