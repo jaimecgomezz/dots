@@ -130,12 +130,8 @@ return require("packer").startup(function(use)
 
             vim.g.fzfSwitchProjectAlwaysChooseFile = 0
             vim.g.fzfSwitchProjectGitInitBehavior = "none"
-            vim.g.fzfSwitchProjectWorkspaces = {
-                "~/repos/jaimecgomezz", "~/repos/aleph", "~/repos/telemetry",
-                "~/repos/dry", "~/repos/crates",
-                "~/repos/jaimecgomezz/learning", "~/repos/vim",
-                "~/repos/learning"
-            }
+
+            require("plugins/projects")
         end
     })
 
