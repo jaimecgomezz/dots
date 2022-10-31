@@ -1,4 +1,4 @@
-include onenord
+include paradise
 
 # set smooth-scroll true
 set window-title-home-tilde true
@@ -11,6 +11,8 @@ map K zoom in
 map J zoom out
 map L navigate next
 map H navigate previous
+
+set recolor
 
 set adjust-open width
 
