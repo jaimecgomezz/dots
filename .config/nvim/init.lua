@@ -1,6 +1,7 @@
 local modules = {
-    "plugins", "globals", "options", "diagnostics", "commands", "mappings",
-    "colors"
+    "colors", "plugins", "globals", "options", "diagnostics", "commands",
+    "mappings"
+
 }
 
 for _, module in ipairs(modules) do

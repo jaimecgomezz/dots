@@ -14,7 +14,7 @@ nls.setup({
         formatting.sqlfluff.with({extra_args = {"--dialect", "postgres"}}),
         diagnostics.shellcheck, formatting.shfmt, diagnostics.eslint_d,
         formatting.prettier, diagnostics.revive, formatting.gofmt,
-        formatting.rustfmt
+        formatting.rustfmt, diagnostics.chktex, formatting.latexindent
     },
 
     on_attach = function(client, bufnr)

@@ -26,4 +26,10 @@ function utils.map(modes, lhs, rhs, opts)
     for _, mode in ipairs(modes) do map_key(mode, lhs, rhs, opts) end
 end
 
+function utils.hl(highlight, fg, bg)
+    if fg == nil then fg = "none" end
+    if bg == nil then bg = "none" end
+    cmd("hi " .. highlight .. " guifg=" .. fg .. " guibg=" .. bg)
+end
+
 return utils
