@@ -12,8 +12,6 @@ map J zoom out
 map L navigate next
 map H navigate previous
 
-set recolor
-
 set adjust-open width
 
 # source: https://github.com/sofiabelen/dotfiles/blob/master/.config/zathura/zathurarc
