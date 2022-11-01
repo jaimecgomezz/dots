@@ -1,5 +1,5 @@
 local cmd = vim.cmd
-local theme = "paradise"
+local theme = "base16-horizon-dark"
 
 local present, base16 = pcall(require, "base16-colorscheme")
 if not present then return end
