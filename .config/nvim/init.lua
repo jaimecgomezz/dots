@@ -1,5 +1,5 @@
 local modules = {
-    "colors", "plugins", "globals", "options", "diagnostics", "commands",
+    "plugins", "colors", "globals", "options", "diagnostics", "commands",
     "mappings"
 
 }
