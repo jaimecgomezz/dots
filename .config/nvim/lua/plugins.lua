@@ -47,7 +47,8 @@ return require("packer").startup(function(use)
                     sync_install = false,
                     highlight = {
                         enable = true,
-                        additional_vim_regex_highlighting = false
+                        additional_vim_regex_highlighting = false,
+                        disable = {"latex"}
                     },
                     ident = {enable = true},
                     incremental_selection = {
@@ -297,6 +298,7 @@ return require("packer").startup(function(use)
             g.tex_flavor = 'latex'
             g.vimtex_view_method = 'zathura'
             g.vimtex_quickfix_mode = 0
+            vim.cmd([[set conceallevel=1]])
             g.tex_conceal = 'abdmg'
         end
     })
