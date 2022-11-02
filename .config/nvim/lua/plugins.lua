@@ -300,8 +300,12 @@ return require("packer").startup(function(use)
             g.vimtex_quickfix_mode = 0
             vim.cmd([[set conceallevel=1]])
             g.tex_conceal = 'abdmg'
-            g.Tex_CompileRule_pdf =
-                'pdflatex -shell-escape -interaction=nonstopmode $*'
+            g.vimtex_compiler_latexmk = {
+                options = {
+                    '-shell-escape', '-verbose', '-file-line-error',
+                    '-synctex=1', '-interaction=nonstopmode'
+                }
+            }
         end
     })
 end)
