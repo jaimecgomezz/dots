@@ -1,11 +1,11 @@
 local cmd = vim.cmd
 local theme = "base16-horizon-dark"
 
-local present, base16 = pcall(require, "base16-colorscheme")
-if not present then return end
-
 local ok, err = pcall(cmd, ("colorscheme " .. theme))
 if not ok then
+    local present, base16 = pcall(require, "base16-colorscheme")
+    if not present then return end
+
     local u = require("utils")
     local cpresent, color = pcall(require, "colors." .. theme)
 

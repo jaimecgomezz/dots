@@ -9,6 +9,19 @@ return require("packer").startup(function(use)
 
     -- colorschemes
     use({"RRethy/nvim-base16"})
+    use({"lunarvim/horizon.nvim"})
+    use({
+        "shaunsingh/nord.nvim",
+        config = function()
+            local vim = vim
+
+            vim.g.nord_contrast = true
+            vim.g.nord_borders = true
+            vim.g.nord_uniform_diff_background = true
+
+            if vim.g.colors_name == 'nord' then require('nord').set() end
+        end
+    })
 
     -- statusline
     use({
