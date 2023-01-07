@@ -10,14 +10,18 @@ nls.setup({
         diagnostics.luacheck, formatting.lua_format,
         diagnostics.rubocop.with({command = {"bundle", "exec", "rubocop"}}),
         formatting.rubocop.with({command = {"bundle", "exec", "rubocop"}}),
-        diagnostics.sqlfluff.with({extra_args = {"--dialect", "postgres"}}),
-        formatting.sqlfluff.with({extra_args = {"--dialect", "postgres"}}),
-        diagnostics.shellcheck, formatting.shfmt, diagnostics.eslint_d,
-        formatting.prettier, diagnostics.revive, formatting.gofmt,
-        formatting.rustfmt, diagnostics.chktex, formatting.latexindent
+        formatting.pg_format, diagnostics.shellcheck, formatting.shfmt,
+        diagnostics.eslint_d, formatting.prettier, diagnostics.revive,
+        formatting.gofmt, formatting.rustfmt, diagnostics.chktex,
+        formatting.latexindent, formatting.nimpretty, diagnostics.credo,
+        formatting.mix
     },
 
     on_attach = function(client, bufnr)
+        local bufopts = {noremap = true, silent = true, buffer = bufnr}
+
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+
         if client.supports_method("textDocument/formatting") then
             vim.api.nvim_clear_autocmds({group = augroup, buffer = bufnr})
             vim.api.nvim_create_autocmd("BufWritePre", {
