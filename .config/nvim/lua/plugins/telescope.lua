@@ -16,7 +16,8 @@ end
 telescope.setup({
     defaults = {
         file_ignore_patterns = {
-            "node_modules", "coverage", "target", "tmp", ".git", "tags"
+            "node_modules", "coverage", "target", "tmp", ".git", "tags",
+            "*.lock", ".local", ".cache"
         },
         mappings = {
             i = {
