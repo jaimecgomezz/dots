@@ -91,6 +91,8 @@ return require("packer").startup(function(use)
                 disable_netrw = true,
                 hijack_cursor = true,
                 update_cwd = true,
+                disable_netrw = false,
+                hijack_netrw = false,
                 hijack_directories = {enable = true, auto_open = false},
                 renderer = {
                     indent_markers = {enable = true},
@@ -271,7 +273,15 @@ return require("packer").startup(function(use)
     })
 
     -- lint, formatting
-    use({"neovim/nvim-lspconfig"})
+    use({
+        "neovim/nvim-lspconfig",
+        config = function()
+            local lspconfig = require('lspconfig')
+
+            lspconfig.solargraph.setup({})
+            lspconfig.elixirls.setup({cmd = {"elixir-ls"}})
+        end
+    })
     use({
         "jose-elias-alvarez/null-ls.nvim",
         config = [[require("plugins/null")]]
@@ -287,7 +297,7 @@ return require("packer").startup(function(use)
     })
     use({
         'williamboman/mason-lspconfig.nvim',
-        config = function() require("mason-lspconfig").setup({}) end
+        config = function() require("mason-lspconfig").setup() end
     })
 
     use({
