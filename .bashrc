@@ -19,6 +19,7 @@ SCRIPTS_PATH="${HOME}/sh"
 # ----------------------------------------------------------
 # env
 # ----------------------------------------------------------
+export THEME=paradise
 export TERM=xterm-256color
 export EDITOR=nvim
 export VISUAL=nvim
