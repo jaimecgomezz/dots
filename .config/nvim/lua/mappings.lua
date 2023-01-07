@@ -90,3 +90,9 @@ map("n", "<localleader>dp", "<cmd>DiffviewFileHistory<cr>", opts)
 map("n", "<localleader>df", "<cmd>DiffviewFileHistory %<cr>", opts)
 map("n", "<localleader>dD", "<cmd>DiffviewClose<cr>", opts)
 map("n", "<localleader>dr", "<cmd>DiffviewRefresh<cr>", opts)
+
+-- inskape-figures
+vim.cmd([[
+inoremap <C-f> <Esc>: silent exec '.!inkscape-figures create "'.getline('.').'" "'.b:vimtex.root.'/figures/"'<CR><CR>:w<CR>
+nnoremap <C-f> : silent exec '!inkscape-figures edit "'.b:vimtex.root.'/figures/" > /dev/null 2>&1 &'<CR><CR>:redraw!<CR>
+]])
