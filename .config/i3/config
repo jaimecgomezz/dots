@@ -354,6 +354,7 @@ bindsym $mod+space                                focus mode_toggle
 # window-sticky
 bindsym $mod+Shift+s                              sticky toggle
 # hide borders
+hide_edge_borders                                 smart
 # source: [1]
 for_window [class="^.*"] border pixel 1
 # source: [2]
@@ -373,6 +374,18 @@ bar {
   status_command                                  i3status
 }
 ####################
+
+
+
+##################################################
+#
+# theme
+#
+##################################################
+# class                 border  backgr. text    indicator child_border
+# client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577       # nord
+# client.focused          #E95379 #E95379 #ffffff #27D796   #E95379       # horizon
+client.focused          #8d987e #8d987e #ffffff #dabd8d   #8d987e           # paradise
 
 
 
