@@ -51,7 +51,7 @@ exec --no-startup-id                              hsetroot -cover ~/pictures/wal
 exec --no-startup-id                              setxkbmap us -variant altgr-intl -option 'ctrl:nocaps'
 
 # lock
-exec --no-startup-id                              xidlehook --not-when-fullscreen --not-when-audio --timer 600 'xrandr --output "$PRIMARY_DISPLAY" --brightness .5' 'xrandr --output "$PRIMARY_DISPLAY" --brightness 1' --timer 300 'xrandr --output "$PRIMARY_DISPLAY" --brightness 1; lok' ''
+exec --no-startup-id                              xidlehook --not-when-fullscreen --not-when-audio --timer 600 'xrandr --output "$PRIMARY_DISPLAY" --brightness .5' 'xrandr --output "$PRIMARY_DISPLAY" --brightness 1' --timer 300 'xrandr --output "$PRIMARY_DISPLAY" --brightness 1; screen-locker.sh' ''
 ####################
 
 
@@ -209,15 +209,14 @@ mode "$mode_gaps_outer" {
 # dmenu
 bindsym $mod+d                                    exec rofi -show drun
 bindsym $mod+Shift+d                              exec rofi -show run
-bindsym $mod+x                                    exec rrr
-bindsym $mod+s                                    exec sxt
+bindsym $mod+x                                    exec runner.sh
+bindsym $mod+s                                    exec exit-manager.sh
 bindsym $mod+t                                    exec tdo
 bindsym $mod+o                                    exec rofi -show filebrowser
 ####################
 
 # terminal
 bindsym $mod+Return                               exec $console
-bindsym $mod+Shift+Return                         exec $console screen -a
 ####################
 
 # kill 
@@ -383,9 +382,9 @@ bar {
 #
 ##################################################
 # class                 border  backgr. text    indicator child_border
-# client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577       # nord
-# client.focused          #E95379 #E95379 #ffffff #27D796   #E95379       # horizon
-client.focused          #8d987e #8d987e #ffffff #dabd8d   #8d987e           # paradise
+# client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577         # nord
+# client.focused          #E95379 #E95379 #ffffff #27D796   #E95379                # horizon
+client.focused          #8d987e #8d987e #ffffff #dabd8d   #8d987e                  # paradise
 
 
 
