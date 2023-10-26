@@ -1,0 +1,6 @@
+* {
+  bg: #1e1e2e;
+  al: #D8DEE9;
+  fg: #ECEFF4;
+  border: 1px;
+}
