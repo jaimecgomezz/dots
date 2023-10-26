@@ -1,4 +1,4 @@
-include horizon
+include catppuccin
 
 # set smooth-scroll true
 set window-title-home-tilde true
@@ -13,5 +13,6 @@ map L navigate next
 map H navigate previous
 
 set adjust-open width
+set recolor true
 
 # source: https://github.com/sofiabelen/dotfiles/blob/master/.config/zathura/zathurarc

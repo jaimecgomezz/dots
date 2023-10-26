@@ -19,8 +19,8 @@ SCRIPTS_PATH="${HOME}/sh"
 # ----------------------------------------------------------
 # env
 # ----------------------------------------------------------
-export THEME=paradise
-export TERM=xterm-256color
+export THEME=catppuccin
+export TERM=kitty
 export EDITOR=nvim
 export VISUAL=nvim
 export TOP=gotop
@@ -210,7 +210,7 @@ load_prompt
 # ----------------------------------------------------------
 # fzf
 # ----------------------------------------------------------
-source "$HOME/.config/fzf/horizon.config"
+source "$HOME/.config/fzf/catppuccin.config"
 
 # ----------------------------------------------------------
 # conf
